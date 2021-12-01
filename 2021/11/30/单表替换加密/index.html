@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="总览 凯撒密码 仿射密码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单表替换加密">
+<meta property="og:url" content="https://github.com/T-K-kai/T-K-kai.github.io.git/2021/11/30/%E5%8D%95%E8%A1%A8%E6%9B%BF%E6%8D%A2%E5%8A%A0%E5%AF%86/index.html">
+<meta property="og:site_name" content="t-kai&#39;Blog">
+<meta property="og:description" content="总览 凯撒密码 仿射密码">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-30T03:37:37.000Z">
+<meta property="article:modified_time" content="2021-12-01T15:27:17.079Z">
+<meta property="article:author" content="kevin">
+<meta property="article:tag" content="干货">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://github.com/T-K-kai/T-K-kai.github.io.git/2021/11/30/%E5%8D%95%E8%A1%A8%E6%9B%BF%E6%8D%A2%E5%8A%A0%E5%AF%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>单表替换加密 | t-kai'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">t-kai'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">2</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/T-K-kai/T-K-kai.github.io.git/2021/11/30/%E5%8D%95%E8%A1%A8%E6%9B%BF%E6%8D%A2%E5%8A%A0%E5%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpg">
+      <meta itemprop="name" content="kevin">
+      <meta itemprop="description" content="记录ctf学习成长的点点滴滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="t-kai'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          单表替换加密
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-30 11:37:37" itemprop="dateCreated datePublished" datetime="2021-11-30T11:37:37+08:00">2021-11-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-01 23:27:17" itemprop="dateModified" datetime="2021-12-01T23:27:17+08:00">2021-12-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/crypto/" itemprop="url" rel="index"><span itemprop="name">crypto</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><ul>
+<li>凯撒密码</li>
+<li>仿射密码<span id="more"></span></li>
+</ul>
+<h2 id="凯撒密码"><a href="#凯撒密码" class="headerlink" title="凯撒密码"></a>凯撒密码</h2><ul>
+<li>原理：<br>凯撒密码（Caesar）加密时会将明文中的每个字母都按照其在字母表中的顺序向后（或向前）移动固定数目（循环移动）作为密文。<br>例如，当偏移量是左移 3 的时候（解密时的密钥就是 3）：<br>明文字母表：ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>密文字母表：DEFGHIJKLMNOPQRSTUVWXYZABC<br>使用时，加密者查找明文字母表中需要加密的消息中的每一个字母所在位置，并且写下密文字母表中对应的字母。需要解密的人则根据事先已知的密钥反过来操作，得到原来的明文。<br>加密代码：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def kaisa(s,n):</span><br><span class="line">	t = &quot;&quot;</span><br><span class="line">	for c in s:</span><br><span class="line">		if 97 &lt;= ord(c) &lt;= 122: </span><br><span class="line">			t += chr( 97 + ((ord(c)-97) + int(n) )%26 )</span><br><span class="line">		elif 65 &lt;= ord(c) &lt;= 90:</span><br><span class="line">			t += chr( 65 + ((ord(c)-65) + int(n) )%26 )</span><br><span class="line">		else:</span><br><span class="line">			t += c</span><br><span class="line">	print(t)</span><br><span class="line">s,n=input().split(&quot; &quot;)</span><br><span class="line">kaisa(s,n)</span><br></pre></td></tr></table></figure></li>
+<li>破解：<br>1、遍历26个偏移量。2、<a target="_blank" rel="noopener" href="http://quipqiup.com/">词频分析</a><br>解密代码(暴力枚举）：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def encrypt(s):</span><br><span class="line">	for n in range(26):</span><br><span class="line">		t = &quot;&quot;</span><br><span class="line">		for c in s:</span><br><span class="line">			if 97 &lt;= ord(c) &lt;= 122: </span><br><span class="line">				t += chr( 97 + ((ord(c)-97) - int(n) )%26 )</span><br><span class="line">			elif 65 &lt;= ord(c) &lt;= 90:</span><br><span class="line">				t += chr( 65 + ((ord(c)-65) - int(n) )%26 )</span><br><span class="line">			else:</span><br><span class="line">				t += c</span><br><span class="line">		print(t)</span><br><span class="line">s=input()</span><br><span class="line">encrypt(s)</span><br></pre></td></tr></table></figure>
+<h2 id="仿射密码"><a href="#仿射密码" class="headerlink" title="仿射密码"></a>仿射密码</h2></li>
+<li>原理：<br>仿射密码的加密函数是 <em>E(x)=(ax+b)(mod m)</em> ，其中<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x 表示明文按照某种编码得到的数字</span><br><span class="line">a 和 m 互质</span><br><span class="line">m 是编码系统中字母的数目（一般为26个英文字母）</span><br></pre></td></tr></table></figure>
+加密代码：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">a = 5  #任意数值</span><br><span class="line">b = 18</span><br><span class="line">m = 26</span><br><span class="line">flag = &quot;flag&#123;23aG490bfDcb7SF670SFSF99agaGSwehGh&#125;&quot;</span><br><span class="line">c=&#x27;&#x27;</span><br><span class="line">def encrypt(flag, c, a, b, m):</span><br><span class="line">    for j in flag:</span><br><span class="line">        if j.islower():</span><br><span class="line">            cha=ord(j)-ord(&#x27;a&#x27;)</span><br><span class="line">            c+=chr((a * cha+ b) % m+ord(&#x27;a&#x27;))</span><br><span class="line">        elif j.isupper():</span><br><span class="line">            cha=ord(j)-ord(&#x27;A&#x27;)</span><br><span class="line">            c+=chr((a * cha+ b) % m+ord(&#x27;A&#x27;))</span><br><span class="line">        else:</span><br><span class="line">            c+=j</span><br><span class="line">    return c</span><br><span class="line">print(encrypt(flag,c,a,b,m))</span><br></pre></td></tr></table></figure></li>
+<li>破解：<br>解密函数是 <em>D(x)=a^-1(x−b)(mod m)</em> ，其中 <em>a^-1</em> 是 a 对 m 的乘法逆元。<br>方法一：利用解密函数<br>方法二：如果已知加密后的部分字母，即可解密。<br>暴力破解：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">def decrypt():</span><br><span class="line">	c=&#x27;rvsw&#123;23smbWb&#125;&#x27;</span><br><span class="line">	flag=&#x27;&#x27;</span><br><span class="line">	n=1</span><br><span class="line">	a1=[1,3,5,7,9,11,15,17,19,21,23,25]</span><br><span class="line">	a=[]</span><br><span class="line">	for i in a1:</span><br><span class="line">		while (i * n) % 26 != 1:</span><br><span class="line">			n +=1</span><br><span class="line">		a.append(n)</span><br><span class="line">		# print(n)</span><br><span class="line">	for e in a:</span><br><span class="line">		for b in range(1,27):</span><br><span class="line">			for s in c:</span><br><span class="line">				if s.islower():</span><br><span class="line">					cha=ord(s)-ord(&#x27;a&#x27;)</span><br><span class="line">					flag+=chr((e*(cha-b)%26)+ord(&#x27;a&#x27;))</span><br><span class="line">				elif s.isupper():</span><br><span class="line">					cha=ord(s)-ord(&#x27;A&#x27;)</span><br><span class="line">					flag+=chr((e*(cha-b)%26)+ord(&#x27;A&#x27;))</span><br><span class="line">				else:</span><br><span class="line">					flag+=s</span><br><span class="line">			if(&#x27;flag&#123;&#x27; in flag and &#x27;&#125;&#x27; in flag):</span><br><span class="line">				print(flag)</span><br><span class="line">decrypt()</span><br><span class="line">不过密文很大程序要跑很长时间，太浪费时间</span><br></pre></td></tr></table></figure>
+所以一般先求出 a 和 b，再进行破解<br>一般明文前几位都是flag<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">y1=(a*x1+b)(mod26)</span><br><span class="line">y2=(a*x2+b)(mod26)</span><br><span class="line">两式相减</span><br><span class="line">y1-y2 = a*(x1-x2)(mod26)</span><br><span class="line">求出 a， 再带入即可求出 b</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+利用解出的 a 和 b<br>解密代码（利用解密函数）：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">e=invert(a,m)</span><br><span class="line">def decrypt(c, e, b):</span><br><span class="line">	flag=&#x27;&#x27;</span><br><span class="line">	for i in c:</span><br><span class="line">		if i.islower():</span><br><span class="line">			cha=ord(i)-ord(&#x27;a&#x27;)</span><br><span class="line">			flag+=chr((e*(cha-b)%26)+ord(&#x27;a&#x27;))</span><br><span class="line">		elif i.isupper():</span><br><span class="line">			cha=ord(i)-ord(&#x27;A&#x27;)</span><br><span class="line">			flag+=chr((e*(cha-b)%26)+ord(&#x27;A&#x27;))</span><br><span class="line">		else:</span><br><span class="line">			flag+=i</span><br><span class="line">	return flag</span><br></pre></td></tr></table></figure>
+<h2 id="移位密码"><a href="#移位密码" class="headerlink" title="移位密码"></a>移位密码</h2></li>
+<li>原理：<br>与凯撒密码类似，区别在于移位密码不仅会处理字母，还会处理数字和特殊字符，常用 ASCII 码表进行移位。其破解方法也是遍历所有的可能性来得到可能的结果。</li>
+<li>破解：<br>一般利用破解工具即可破解<br>例如：埃特巴什码（Atbash Cipher）<blockquote>
+<p><a target="_blank" rel="noopener" href="http://www.practicalcryptography.com/ciphers/classical-era/atbash-cipher/">http://www.practicalcryptography.com/ciphers/classical-era/atbash-cipher/</a><br>也可以用词频分析工具<br><a target="_blank" rel="noopener" href="http://quipqiup.com/">http://quipqiup.com/</a></p>
+</blockquote>
+<h2 id="培根密码"><a href="#培根密码" class="headerlink" title="培根密码"></a>培根密码</h2></li>
+<li>原理：<br>利用 A 和 B 两种字符，五个为一组，结合加密表进行加密。<br>或将 A 当作 0 ，B 当作 1 ，26 个字母代表从 0 到 25，相互对应。</li>
+<li>破解：<br>利用破解工具<blockquote>
+<p><a target="_blank" rel="noopener" href="http://rumkin.com/tools/cipher/baconian.php">http://rumkin.com/tools/cipher/baconian.php</a></p>
+</blockquote>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%B9%B2%E8%B4%A7/" rel="tag"># 干货</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/28/hello-world/" rel="prev" title="Hello World">
+      <i class="fa fa-chevron-left"></i> Hello World
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E8%A7%88"><span class="nav-number">1.</span> <span class="nav-text">总览</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%AF%E6%92%92%E5%AF%86%E7%A0%81"><span class="nav-number">1.1.</span> <span class="nav-text">凯撒密码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BF%E5%B0%84%E5%AF%86%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text">仿射密码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E4%BD%8D%E5%AF%86%E7%A0%81"><span class="nav-number">1.3.</span> <span class="nav-text">移位密码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%B9%E6%A0%B9%E5%AF%86%E7%A0%81"><span class="nav-number">1.4.</span> <span class="nav-text">培根密码</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="kevin"
+      src="/images/touxiang.jpg">
+  <p class="site-author-name" itemprop="name">kevin</p>
+  <div class="site-description" itemprop="description">记录ctf学习成长的点点滴滴</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/T-K-kai" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;T-K-kai"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1494513782@qq.com" title="E-Mail → mailto:1494513782@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">kevin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

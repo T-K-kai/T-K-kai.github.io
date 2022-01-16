@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="总览 Playfair 棋盘密码 Vigenere AutokeyCipher Nihilist Hill">
+  <meta name="description" content="RSA刷题（ctf小学生）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="多表代换加密">
-<meta property="og:url" content="https://github.com/T-K-kai/T-K-kai.github.io.git/2021/12/03/%E5%A4%9A%E8%A1%A8%E4%BB%A3%E6%8D%A2%E5%8A%A0%E5%AF%86/index.html">
+<meta property="og:title" content="RSA1">
+<meta property="og:url" content="https://github.com/T-K-kai/T-K-kai.github.io.git/2022/01/16/RSA1-1/index.html">
 <meta property="og:site_name" content="t-kai&#39;Blog">
-<meta property="og:description" content="总览 Playfair 棋盘密码 Vigenere AutokeyCipher Nihilist Hill">
+<meta property="og:description" content="RSA刷题（ctf小学生）">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-12-03T04:02:25.000Z">
-<meta property="article:modified_time" content="2021-12-06T04:04:48.582Z">
+<meta property="article:published_time" content="2022-01-16T05:37:15.000Z">
+<meta property="article:modified_time" content="2022-01-16T08:31:35.220Z">
 <meta property="article:author" content="kevin">
-<meta property="article:tag" content="干货">
+<meta property="article:tag" content="RSA">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://github.com/T-K-kai/T-K-kai.github.io.git/2021/12/03/%E5%A4%9A%E8%A1%A8%E4%BB%A3%E6%8D%A2%E5%8A%A0%E5%AF%86/">
+<link rel="canonical" href="https://github.com/T-K-kai/T-K-kai.github.io.git/2022/01/16/RSA1-1/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>多表代换加密 | t-kai'Blog</title>
+  <title>RSA1 | t-kai'Blog</title>
   
 
 
@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://github.com/T-K-kai/T-K-kai.github.io.git/2021/12/03/%E5%A4%9A%E8%A1%A8%E4%BB%A3%E6%8D%A2%E5%8A%A0%E5%AF%86/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/T-K-kai/T-K-kai.github.io.git/2022/01/16/RSA1-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/touxiang.jpg">
@@ -174,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          多表代换加密
+          RSA1
         </h1>
 
         <div class="post-meta">
@@ -183,16 +183,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-12-03 12:02:25" itemprop="dateCreated datePublished" datetime="2021-12-03T12:02:25+08:00">2021-12-03</time>
+              <time title="创建时间：2022-01-16 13:37:15 / 修改时间：16:31:35" itemprop="dateCreated datePublished" datetime="2022-01-16T13:37:15+08:00">2022-01-16</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-06 12:04:48" itemprop="dateModified" datetime="2021-12-06T12:04:48+08:00">2021-12-06</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -214,82 +208,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><ul>
-<li>Playfair</li>
-<li>棋盘密码</li>
-<li>Vigenere</li>
-<li>AutokeyCipher</li>
-<li>Nihilist</li>
-<li>Hill<span id="more"></span>
-<h2 id="Playfair"><a href="#Playfair" class="headerlink" title="Playfair"></a>Playfair</h2></li>
-<li>原理：<br>  1.选取一串英文字母，除去重复出现的字母，将剩下的字母逐个逐个加入 5 × 5 的矩阵内，剩下的空间由未加入的英文字母依 a-z 的顺序加入。注意，将 q 去除，或将 i 和 j 视作同一字。<br>  2.将要加密的明文分成两个一组。若组内的字母相同，将 X（或 Q）加到该组的第一个字母后，重新分组。若剩下一个字，也加入 X 。<br>  3.在每组中，找出两个字母在矩阵中的地方。<ul>
-<li>若两个字母不同行也不同列，在矩阵中找出另外两个字母（第一个字母对应行优先），使这四个字母成为一个长方形的四个角。</li>
-<li>若两个字母同行，取这两个字母右方的字母（若字母在最右方则取最左方的字母）</li>
-<li>若两个字母同列，取这两个字母下方的字母（若字母在最下方则取最上方的字母）</li>
-</ul>
-</li>
-<li>解密：(<a target="_blank" rel="noopener" href="http://rumkin.com/tools/cipher/playfair.php">http://rumkin.com/tools/cipher/playfair.php</a>)</li>
-</ul>
-<h2 id="棋盘密码"><a href="#棋盘密码" class="headerlink" title="棋盘密码"></a>棋盘密码</h2><ul>
-<li>原理：<br>  其一般是将给定的明文加密为两两组合的数字，其常用密码表<table>
-<thead>
-<tr>
-<th align="center"></th>
-<th align="center">1</th>
-<th align="center">2</th>
-<th align="center">3</th>
-<th align="center">4</th>
-<th align="center">5</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">1</td>
-<td align="center">A</td>
-<td align="center">B</td>
-<td align="center">C</td>
-<td align="center">D</td>
-<td align="center">E</td>
-</tr>
-<tr>
-<td align="center">2</td>
-<td align="center">F</td>
-<td align="center">G</td>
-<td align="center">H</td>
-<td align="center">I/J</td>
-<td align="center">K</td>
-</tr>
-<tr>
-<td align="center">3</td>
-<td align="center">L</td>
-<td align="center">M</td>
-<td align="center">C</td>
-<td align="center">O</td>
-<td align="center">P</td>
-</tr>
-<tr>
-<td align="center">4</td>
-<td align="center">Q</td>
-<td align="center">R</td>
-<td align="center">C</td>
-<td align="center">T</td>
-<td align="center">U</td>
-</tr>
-<tr>
-<td align="center">5</td>
-<td align="center">V</td>
-<td align="center">W</td>
-<td align="center">C</td>
-<td align="center">Y</td>
-<td align="center">Z</td>
-</tr>
-</tbody></table>
-<h2 id="Vigenere"><a href="#Vigenere" class="headerlink" title="Vigenere"></a>Vigenere</h2></li>
-<li>原理：<br>  在凯撒密码基础上扩展出来的多表密码,引入了密钥,根据密钥来决定用哪一行的密表来进行替换。(先行后列)</li>
-<li>解密：(<a target="_blank" rel="noopener" href="https://www.guballa.de/vigenere-solver">https://www.guballa.de/vigenere-solver</a>)  <h2 id="AutokeyCipher"><a href="#AutokeyCipher" class="headerlink" title="AutokeyCipher"></a>AutokeyCipher</h2></li>
-<li>原理：<br>  与维吉尼亚密码类似，区别在于密钥不同。密钥：明文 + 关键词<br>  然后加密过程与Vigenere类似。<h2 id="Nihilist"><a href="#Nihilist" class="headerlink" title="Nihilist"></a>Nihilist</h2></li>
-<li>原理：<br>  1.选取一个关键词已构成Polybius方格，即在5*5矩阵中填写关键词（去重），然后继续在其中按顺序填写字母表的其余字母。<br>  2.选取的明文，利用以上的Polynius方格将其转换为数字（先行后列）。<h2 id="Hill"><a href="#Hill" class="headerlink" title="Hill"></a>Hill</h2></li>
-<li>原理：<br>  希尔密码（Hill）使用每个字母在字母表中的顺序作为其对应的数字，即 A=0，B=1，C=2 等，然后将明文转化为 n 维向量，跟一个 n × n 的矩阵相乘，再将得出的结果模 26。注意用作加密的矩阵（即密匙）在$Z_{26}^n$必须是可逆的，否则就不可能解码。只有矩阵的行列式和 26 互质，才是可逆的。</li>
-<li>解密：(<a target="_blank" rel="noopener" href="http://www.practicalcryptography.com/ciphers/hill-cipher/">http://www.practicalcryptography.com/ciphers/hill-cipher/</a>)</li>
+        <h1 id="RSA刷题（ctf小学生）"><a href="#RSA刷题（ctf小学生）" class="headerlink" title="RSA刷题（ctf小学生）"></a>RSA刷题（ctf小学生）</h1><span id="more"></span>
+<h2 id="RSA1"><a href="#RSA1" class="headerlink" title="RSA1"></a>RSA1</h2><ul>
+<li>因为$c=1$,<br>所以$m^e=m=c \pmod n$<br>$m&lt;n$,所以c=m,直接对C转换<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(libnum.n2s(int(c)))</span><br><span class="line">b&#x27;flag&#123;046b9e03-474f-4ac0-9372-25bfc545dc08&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="RSA2"><a href="#RSA2" class="headerlink" title="RSA2"></a>RSA2</h2></li>
+<li>同样$e=1$,$m^e=m=c \pmod n$,所以$m=c=c_i*m_i*m_i^-1 \pmod n$<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">M=n1*n2*n3</span><br><span class="line">m_1=invert(M//n1,n1)</span><br><span class="line">c_1=c1*M//n1*m_1</span><br><span class="line">m_2=invert(M//n2,n2)</span><br><span class="line">c_2=c2*M//n2*m_2</span><br><span class="line">m_3=invert(M//n3,n3)</span><br><span class="line">c_3=c3*M//n3*m_3</span><br><span class="line">c=(c_1+c_2+c_3)%M</span><br><span class="line">print(libnum.n2s(int(c)))</span><br><span class="line">b&#x27;flag&#123;cba55428-f26b-4065-9f34-81c5c8e2c637&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="RSA3"><a href="#RSA3" class="headerlink" title="RSA3"></a>RSA3</h2></li>
+<li>题目上N是相同的，所以可以想到是共模攻击<br>可以直接用公式<br>$c_1^x*c_2^y=m$<br>x,y由扩展欧几里得算法得到<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">g,x,y=gcdext(e1,e2)</span><br><span class="line">m = pow(c1,x,n) * pow(c2,y,n) % n</span><br><span class="line">print(libnum.n2s(int(m)))</span><br><span class="line">b&#x27;flag&#123;01645dce-022e-49cb-9523-4b4d8e84a0e2&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="RSA4"><a href="#RSA4" class="headerlink" title="RSA4"></a>RSA4</h2></li>
+<li>题目描述给错了密钥，打开pubckey.pem，发现是PRIVATE KEY，所以可以直接读取文件得到d<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">with open(&quot;flag.pem&quot;,&quot;rb&quot;) as f:</span><br><span class="line">	c= int(f.read().hex(),16)</span><br><span class="line">with open(&quot;pubckey.pem&quot;,&quot;rb&quot;) as f:</span><br><span class="line">	key = f.read()</span><br><span class="line">rsakey=RSA.importKey(key)</span><br><span class="line">d = rsakey.d</span><br><span class="line">n = rsakey.n</span><br><span class="line">m=pow(c,d,n)</span><br><span class="line">print(libnum.n2s(int(m)))</span><br><span class="line">b&#x27;flag&#123;947ce8a3-40ee-46c0-a00e-0026e583f8da&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="RSA5"><a href="#RSA5" class="headerlink" title="RSA5"></a>RSA5</h2></li>
+<li>复制公钥利用解密工具解开得到e=65537,d用yafu分解得到p和q，根据p，q求出d，求解得到明文。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">phi=(p-1)*(q-1)</span><br><span class="line">d=invert(e,phi)</span><br><span class="line">m=pow(c,d,n)</span><br><span class="line">print(libnum.n2s(int(m)))</span><br><span class="line">b&#x27;flag&#123;c4a6661d-a8f9-4861-bfb9-871ea31a10ca&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="RSA6"><a href="#RSA6" class="headerlink" title="RSA6"></a>RSA6</h2></li>
+<li>题目OEAP还没搞明白<h2 id="RSA7"><a href="#RSA7" class="headerlink" title="RSA7"></a>RSA7</h2></li>
+<li>题目中给的e特别大，相应的d就会特别小，可以想到是低解密指数攻击<br>利用RSAwienerHacker代码解密<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import hashlib</span><br><span class="line">import RSAwienerHackerfile:///E:/firefox/rsa9.py</span><br><span class="line">N = </span><br><span class="line">e = </span><br><span class="line">d =  RSAwienerHacker.hack_RSA(e,N)</span><br><span class="line">print(d)</span><br><span class="line">flag = &quot;flag&#123;&quot; + hashlib.md5(hex(d).encode(&quot;utf-8&quot;)).hexdigest()+ &quot;&#125;&quot;</span><br><span class="line">print(flag)</span><br><span class="line">flag&#123;7bb48f1a4fff37de68adfa0f1ac3a955&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="RSA8"><a href="#RSA8" class="headerlink" title="RSA8"></a>RSA8</h2></li>
+<li>题目只给了n,c,e，利用yafu分解n，发现n是素数，所以phi=n-1<br>可以求出d从而得到flag<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">phi=n-1</span><br><span class="line">d=invert(e,phi)</span><br><span class="line">m=pow(c,d,n)</span><br><span class="line">print(libnum.n2s(int(m)))</span><br><span class="line">b&#x27;flag&#123;c9991f77-c898-406a-8785-5a6db8081533&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="RSA9"><a href="#RSA9" class="headerlink" title="RSA9"></a>RSA9</h2></li>
+<li>题目将m通过pow(c,d,n)加密，$m=c^d \pmod n$，相当于把RSA加密过程反过来运用，我们只需求出c即可。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">phi=(p-1)*(q-1)</span><br><span class="line">e=invert(d,phi)</span><br><span class="line">c=pow(m,e,n)</span><br><span class="line">print(c)</span><br><span class="line">print(libnum.n2s(int(c)))</span><br><span class="line">b&#x27;flag&#123;0ba0fcc8-88d2-4f78-b1e2-e3823539340c&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="RSA10"><a href="#RSA10" class="headerlink" title="RSA10"></a>RSA10</h2></li>
+<li>题目给了一个e和两组c，n，可以想到这是广播攻击<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def crt(a, n):</span><br><span class="line">	sum=0</span><br><span class="line">	prod = reduce(lambda a, b: a*b, n)</span><br><span class="line"></span><br><span class="line">	for n_i, a_i in zip(n, a):</span><br><span class="line">		p = prod // n_i</span><br><span class="line">		sum += a_i * gmpy2.invert(p, n_i) * p</span><br><span class="line">	return sum % prod</span><br><span class="line">c=crt([c1,c2],[n1,n2])</span><br><span class="line">phi= (p1-1)*(q1-1)*(p2-1)*(q2-1)</span><br><span class="line">d = libnum.invmod(e, phi)</span><br><span class="line">m = pow(c, d, n1*n2)</span><br><span class="line">print(libnum.n2s(int(m)))</span><br><span class="line">b&#x27;flag&#123;b204d8a4-0186-48c4-9c5f-2d02d267c326&#125;&#x27;</span><br></pre></td></tr></table></figure></li>
 </ul>
 
     </div>
@@ -300,7 +238,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E5%B9%B2%E8%B4%A7/" rel="tag"># 干货</a>
+              <a href="/tags/RSA/" rel="tag"># RSA</a>
           </div>
 
         
@@ -309,13 +247,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/11/30/%E5%8D%95%E8%A1%A8%E6%9B%BF%E6%8D%A2%E5%8A%A0%E5%AF%86/" rel="prev" title="单表替换加密">
-      <i class="fa fa-chevron-left"></i> 单表替换加密
+    <a href="/2021/12/11/RSA1/" rel="prev" title="RSA1">
+      <i class="fa fa-chevron-left"></i> RSA1
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/12/06/%E5%85%B6%E4%BB%96%E5%AF%86%E7%A0%81/" rel="next" title="其他密码">
-      其他密码 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -374,7 +309,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E8%A7%88"><span class="nav-number">1.</span> <span class="nav-text">总览</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Playfair"><span class="nav-number">1.1.</span> <span class="nav-text">Playfair</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%8B%E7%9B%98%E5%AF%86%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text">棋盘密码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vigenere"><span class="nav-number">1.3.</span> <span class="nav-text">Vigenere</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AutokeyCipher"><span class="nav-number">1.4.</span> <span class="nav-text">AutokeyCipher</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nihilist"><span class="nav-number">1.5.</span> <span class="nav-text">Nihilist</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hill"><span class="nav-number">1.6.</span> <span class="nav-text">Hill</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RSA%E5%88%B7%E9%A2%98%EF%BC%88ctf%E5%B0%8F%E5%AD%A6%E7%94%9F%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">RSA刷题（ctf小学生）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA1"><span class="nav-number">1.1.</span> <span class="nav-text">RSA1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA2"><span class="nav-number">1.2.</span> <span class="nav-text">RSA2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA3"><span class="nav-number">1.3.</span> <span class="nav-text">RSA3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA4"><span class="nav-number">1.4.</span> <span class="nav-text">RSA4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA5"><span class="nav-number">1.5.</span> <span class="nav-text">RSA5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA6"><span class="nav-number">1.6.</span> <span class="nav-text">RSA6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA7"><span class="nav-number">1.7.</span> <span class="nav-text">RSA7</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA8"><span class="nav-number">1.8.</span> <span class="nav-text">RSA8</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA9"><span class="nav-number">1.9.</span> <span class="nav-text">RSA9</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA10"><span class="nav-number">1.10.</span> <span class="nav-text">RSA10</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

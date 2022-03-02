@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="RSA刷题（ctf小学生）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RSA1-2">
+<meta property="og:url" content="https://github.com/T-K-kai/T-K-kai.github.io.git/2022/01/18/RSA1-2/index.html">
+<meta property="og:site_name" content="t-kai&#39;Blog">
+<meta property="og:description" content="RSA刷题（ctf小学生）">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-01-18T11:20:21.000Z">
+<meta property="article:modified_time" content="2022-03-02T13:12:50.126Z">
+<meta property="article:author" content="kevin">
+<meta property="article:tag" content="RSA">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://github.com/T-K-kai/T-K-kai.github.io.git/2022/01/18/RSA1-2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>RSA1-2 | t-kai'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">t-kai'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">8</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/T-K-kai/T-K-kai.github.io.git/2022/01/18/RSA1-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpg">
+      <meta itemprop="name" content="kevin">
+      <meta itemprop="description" content="一鼓作气，再而衰，三而竭。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="t-kai'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RSA1-2
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-01-18 19:20:21" itemprop="dateCreated datePublished" datetime="2022-01-18T19:20:21+08:00">2022-01-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-02 21:12:50" itemprop="dateModified" datetime="2022-03-02T21:12:50+08:00">2022-03-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/crypto/" itemprop="url" rel="index"><span itemprop="name">crypto</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="RSA刷题（ctf小学生）"><a href="#RSA刷题（ctf小学生）" class="headerlink" title="RSA刷题（ctf小学生）"></a>RSA刷题（ctf小学生）</h1><span id="more"></span>
+<h2 id="RSA11"><a href="#RSA11" class="headerlink" title="RSA11"></a>RSA11</h2><ul>
+<li>e=3，非常小，说明用低加密指数攻击，直接对c开e次方得到flag<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">m=iroot(c,e)</span><br><span class="line">print(long_to_bytes(m[0]))</span><br><span class="line">b&#x27;flag&#123;c47361b6-7627-4a4f-baf7-21001f967b56&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="RSA12"><a href="#RSA12" class="headerlink" title="RSA12"></a>RSA12</h2></li>
+<li>题目给了三组n和c，利用中国剩余定理求出c，e的范围在10~20之间可以枚举<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def CRT(m, a):</span><br><span class="line">    M = reduce(lambda x,y:x*y,m)</span><br><span class="line">    sum = 0</span><br><span class="line">    for m, a in zip(m, a):</span><br><span class="line">        M_i = M // m</span><br><span class="line">        c_i = invert(M_i, m)</span><br><span class="line">        sum += a * c_i * M_i</span><br><span class="line">    return sum % M</span><br><span class="line">C=CRT([n1,n2,n3],[c1,c2,c3])</span><br><span class="line">print(C)</span><br><span class="line">for e in range(10,20):</span><br><span class="line">	m=iroot(C,e)</span><br><span class="line">	print(long_to_bytes(m[0]))</span><br><span class="line">b&#x27;flag&#123;326177d1-448f-48a6-abdd-ee2085b28eaf&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="RSA13"><a href="#RSA13" class="headerlink" title="RSA13"></a>RSA13</h2></li>
+<li>题目给出的flag被分成了两部分，分别加密，给的n1和n2有公因数p，求出公因数p就可以求出q1、q2，然后解出d，解出flag合并到一起。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">p=gcd(n1,n2)</span><br><span class="line">q1=n1//p</span><br><span class="line">q2=n2//p</span><br><span class="line">phi_1=(q1-1)*(p-1)</span><br><span class="line">phi_2=(q2-1)*(p-1)</span><br><span class="line">d1=invert(e,phi_1)</span><br><span class="line">d2=invert(e,phi_2)</span><br><span class="line">m1=pow(c1,d1,n1)</span><br><span class="line">m2=pow(c2,d2,n2)</span><br><span class="line">print(long_to_bytes(m1))</span><br><span class="line">print(long_to_bytes(m2))</span><br><span class="line">b&#x27;flag&#123;bbe56da9-9da8-4a&#x27;</span><br><span class="line">b&#x27;52-9f75-9efb3edbf136&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="RSA14"><a href="#RSA14" class="headerlink" title="RSA14"></a>RSA14</h2></li>
+<li>题目给出了n，e，c和dp<br>$dp \equiv d mod (p-1)$</li>
+</ul>
+<p>$dq \equiv d mod (q-1)$</p>
+<p>$e*d \equiv 1 mod (p-1)*(q-1)$</p>
+<p>所以 $dp \equiv k*(p-1) + d$</p>
+<p>$dp*e \equiv k*(p-1) + d*e$</p>
+<p>即$d*e \equiv k*(p-1) + dp*e$</p>
+<p>结合$e*d \equiv 1 mod (p-1)*(q-1)$</p>
+<p>所以$k*(p-1) + dp*e \equiv 1 mod (p-1)*(q-1)$</p>
+<p>$dp*e \equiv k1*(p-1)*(q-1) + 1 - k2*(p-1)$</p>
+<p>$dp*e \equiv [k1*(q-1) - k2]*(p-1) + 1$</p>
+<p>$dp*e - 1 \equiv [k1*(q-1) - k2]*(p-1)$</p>
+<p>$dp &lt; (p-1)$</p>
+<p>设[k1*(q-1) - k2]为x，x&lt;e，遍历0~e，求出p-1，即可得到p</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">for p_i in range(1,e):</span><br><span class="line">	if (dp*e - 1)%p_i==0:</span><br><span class="line">		if n%((dp*e - 1)//p_i+1)==0:</span><br><span class="line">			p=(dp*e - 1)//p_i+1</span><br><span class="line">			q=n//p</span><br><span class="line">			phi = (p-1)*(q-1)</span><br><span class="line">			d = gmpy2.invert(e,phi)%phi</span><br><span class="line">m=pow(c,d,n)</span><br><span class="line">print(long_to_bytes(m))</span><br><span class="line">b&#x27;flag&#123;4943d89d-653a-455a-9ca5-9f1d3bdd9516&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="RSA15"><a href="#RSA15" class="headerlink" title="RSA15"></a>RSA15</h2><ul>
+<li>根据题目给出的p,q,c,dp和dq，说明这一道题是用dp和dq来解的。<br>根据中国剩余定理<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">m1=c^d%p</span><br><span class="line">m2=c^d%q</span><br></pre></td></tr></table></figure>
+其中<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">m1=c^dp%p</span><br><span class="line">m2=c^dq%q</span><br></pre></td></tr></table></figure>
+所以<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">c^d=m1+k*p</span><br><span class="line">带入m2=c^d%q</span><br><span class="line">m2=(m1+k*p)%q</span><br><span class="line">m2-m1=k*p%q</span><br><span class="line">(m2-m1)*p^-1=k%q</span><br><span class="line">k=(m2-m1)*p^-1%q</span><br><span class="line"></span><br><span class="line">k=(m2-m1)*p^-1%q</span><br><span class="line">c^d=m1+k*p</span><br><span class="line"></span><br><span class="line">c^d=((m2-m1)*p^-1%q)*p+m1</span><br><span class="line">m=c^d%n</span><br><span class="line">m=(((m2-m1)*p^-1%q)*p+m1)%n</span><br></pre></td></tr></table></figure>
+代码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">i=invert(p,q)</span><br><span class="line">m1=pow(c,dp,p)</span><br><span class="line">m2=pow(c,dq,q)</span><br><span class="line">m=((((m2-m1)*i)%q)*p+m1)%(p*q)</span><br><span class="line">print(long_to_bytes(m))</span><br><span class="line">b&#x27;flag&#123;96bd68e0-983e-4683-83c5-9cde3d18bea3&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="RSA16"><a href="#RSA16" class="headerlink" title="RSA16"></a>RSA16</h2></li>
+<li>题目给出n，c和e，yafu分解n，得到n为p的5次方。<br>根据欧拉定理，$phi=p^5-p^4$<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">phi = pow(p,5) - pow(p,4)</span><br><span class="line">d=invert(e,phi)</span><br><span class="line">m=pow(c,d,n)</span><br><span class="line">print(long_to_bytes(m))</span><br><span class="line">b&#x27;flag&#123;5f801865-d79a-4443-a62e-7e527ebaba33&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="RSA17"><a href="#RSA17" class="headerlink" title="RSA17"></a>RSA17</h2></li>
+<li>给出n和q可以求出p，但是根据n//q求出的p不能求解出明文，p和q位数不接近，再对p分解得到为一个数的三次方，根据欧拉定理n*(1-1//p)*(1-1//q)求出n的欧拉函数，再求解可得到明文。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">phi = n + n//(p*q) - n //p - n//q</span><br><span class="line">d = invert(e, phi)</span><br><span class="line">m=pow(c,d,n)</span><br><span class="line">print(long_to_bytes(m))</span><br><span class="line">b&#x27;flag&#123;5a3ecc6d-d052-404a-b162-9429fc181df1&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="RSA18"><a href="#RSA18" class="headerlink" title="RSA18"></a>RSA18</h2></li>
+<li>题目给出了p，q，c和e，一般可以直接求出明文，但发现e和phi不互素，所以先求出其公因数再求解。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">phi=(p-1)*(q-1)</span><br><span class="line">t=gcd(phi,e)</span><br><span class="line">d=invert(e//t,phi)</span><br><span class="line">m=pow(c,d,p*q)</span><br><span class="line">msg=iroot(m,t)</span><br><span class="line">print(long_to_bytes(msg[0]))</span><br><span class="line">b&#x27;flag&#123;b970456b-32f7-4f29-8244-69709a9097ef&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="RAS19"><a href="#RAS19" class="headerlink" title="RAS19"></a>RAS19</h2></li>
+<li>对公式分解发现c和n有公因数p<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">p=gcd(c,n)</span><br><span class="line">q=n//p </span><br><span class="line">phi=(p-1)*(q-1)</span><br><span class="line">d=invert(e,phi)</span><br><span class="line">m=pow(c,d,n)</span><br><span class="line">print(long_to_bytes(m//p))</span><br><span class="line">b&#x27;flag&#123;bdce2381-c20a-4348-94e2-b20ff798681b&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="RSA20"><a href="#RSA20" class="headerlink" title="RSA20"></a>RSA20</h2></li>
+<li>这道题是rabin解密，特征为e=2，rabin有四个解，其中一个即为flag<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">inv_p = invert(p, q)</span><br><span class="line">inv_q = invert(q, p)</span><br><span class="line">mp = pow(c, (p + 1) // 4, p)</span><br><span class="line">mq = pow(c, (q + 1) // 4, q)</span><br><span class="line">a = (inv_p * p * mq + inv_q * q * mp) % n</span><br><span class="line">b = n - int(a)</span><br><span class="line">c = (inv_p * p * mq - inv_q * q * mp) % n</span><br><span class="line">d = n - int(c)</span><br><span class="line">flag=[a,b,c,d]</span><br><span class="line">for i in flag:</span><br><span class="line">    print(i)</span><br><span class="line">    print(long_to_bytes(i))</span><br><span class="line">b&#x27;flag&#123;5c13ebe1-aef3-44e0-a84d-04859b1ede81&#125;&#x27;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RSA/" rel="tag"># RSA</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/16/RSA1-1/" rel="prev" title="RSA1">
+      <i class="fa fa-chevron-left"></i> RSA1
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/17/RSA1-3/" rel="next" title="RSA1-3">
+      RSA1-3 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RSA%E5%88%B7%E9%A2%98%EF%BC%88ctf%E5%B0%8F%E5%AD%A6%E7%94%9F%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">RSA刷题（ctf小学生）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA11"><span class="nav-number">1.1.</span> <span class="nav-text">RSA11</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA12"><span class="nav-number">1.2.</span> <span class="nav-text">RSA12</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA13"><span class="nav-number">1.3.</span> <span class="nav-text">RSA13</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA14"><span class="nav-number">1.4.</span> <span class="nav-text">RSA14</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA15"><span class="nav-number">1.5.</span> <span class="nav-text">RSA15</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA16"><span class="nav-number">1.6.</span> <span class="nav-text">RSA16</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA17"><span class="nav-number">1.7.</span> <span class="nav-text">RSA17</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA18"><span class="nav-number">1.8.</span> <span class="nav-text">RSA18</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RAS19"><span class="nav-number">1.9.</span> <span class="nav-text">RAS19</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA20"><span class="nav-number">1.10.</span> <span class="nav-text">RSA20</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="kevin"
+      src="/images/touxiang.jpg">
+  <p class="site-author-name" itemprop="name">kevin</p>
+  <div class="site-description" itemprop="description">一鼓作气，再而衰，三而竭。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/T-K-kai" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;T-K-kai"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1494513782@qq.com" title="E-Mail → mailto:1494513782@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">kevin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="RSA刷题（ctf小学生）">
+  <meta name="description" content="线性同余（LCG）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RSA1-4">
-<meta property="og:url" content="https://github.com/T-K-kai/T-K-kai.github.io.git/2022/02/17/RSA1-4/index.html">
+<meta property="og:title" content="线性同余">
+<meta property="og:url" content="https://github.com/T-K-kai/T-K-kai.github.io.git/2022/03/10/%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99/index.html">
 <meta property="og:site_name" content="t-kai&#39;Blog">
-<meta property="og:description" content="RSA刷题（ctf小学生）">
+<meta property="og:description" content="线性同余（LCG）">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-02-17T05:40:12.000Z">
-<meta property="article:modified_time" content="2022-03-02T13:13:15.770Z">
+<meta property="article:published_time" content="2022-03-10T14:50:48.000Z">
+<meta property="article:modified_time" content="2022-03-10T14:52:04.131Z">
 <meta property="article:author" content="kevin">
-<meta property="article:tag" content="RSA">
+<meta property="article:tag" content="流密码">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://github.com/T-K-kai/T-K-kai.github.io.git/2022/02/17/RSA1-4/">
+<link rel="canonical" href="https://github.com/T-K-kai/T-K-kai.github.io.git/2022/03/10/%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>RSA1-4 | t-kai'Blog</title>
+  <title>线性同余 | t-kai'Blog</title>
   
 
 
@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://github.com/T-K-kai/T-K-kai.github.io.git/2022/02/17/RSA1-4/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/T-K-kai/T-K-kai.github.io.git/2022/03/10/%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/touxiang.jpg">
@@ -174,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          RSA1-4
+          线性同余
         </h1>
 
         <div class="post-meta">
@@ -183,16 +183,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2022-02-17 13:40:12" itemprop="dateCreated datePublished" datetime="2022-02-17T13:40:12+08:00">2022-02-17</time>
+              <time title="创建时间：2022-03-10 22:50:48 / 修改时间：22:52:04" itemprop="dateCreated datePublished" datetime="2022-03-10T22:50:48+08:00">2022-03-10</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-02 21:13:15" itemprop="dateModified" datetime="2022-03-02T21:13:15+08:00">2022-03-02</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -214,19 +208,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="RSA刷题（ctf小学生）"><a href="#RSA刷题（ctf小学生）" class="headerlink" title="RSA刷题（ctf小学生）"></a>RSA刷题（ctf小学生）</h1><span id="more"></span>
-<h1 id="RSA31"><a href="#RSA31" class="headerlink" title="RSA31"></a>RSA31</h1><ul>
-<li>yafu分解n得到p和q，求得明文为一串数字，还要将其转化为字符串。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">msg = str(m)</span><br><span class="line">flag = &quot;&quot;</span><br><span class="line">while i &lt; len(msg):</span><br><span class="line">    if int(msg[i:i+3]) &lt; 128:</span><br><span class="line">        flag += chr(int(msg[i:i+3]))</span><br><span class="line">        i += 3</span><br><span class="line">    else:</span><br><span class="line">        flag += chr(int(msg[i:i+2]))</span><br><span class="line">        i += 2</span><br><span class="line">print(flag)</span><br><span class="line">flag&#123;b3a6dda2-6599-41c5-8980-141c6aa2c7c3&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="RSA34"><a href="#RSA34" class="headerlink" title="RSA34"></a>RSA34</h1></li>
-<li>已知g=n+1，<br>$$c=(g^p\pmod {n^2} * m^n \pmod {n^2})\pmod {n^2}$$<br>$$hint=m^n \pmod {n^2}$$<br>所以<br>$$c=((n+1)^p * hint)\pmod {n^2}$$<br>$$c*hint^{-1}\equiv(n+1)^p\pmod {n^2}$$<br>因为$$(n+1)^p\equiv(n^p+k*n*p+1) \pmod {n^2}$$<br>所以$$c*hint^{-1} -1\equiv k*p*n $$<br>$$kp\equiv(c*hint^{-1}-1)/n$$<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">h=invert(hint,n*n)</span><br><span class="line">p=gcd((c*h-1)//n,n)</span><br><span class="line">print(p)</span><br><span class="line">q=n//p </span><br><span class="line">phi=(p-1)*(q-1)</span><br><span class="line">d=invert(n,phi)</span><br><span class="line">m=pow(hint%n,d,n)</span><br><span class="line">print(long_to_bytes(m))</span><br><span class="line">flag&#123;3fc79e66-f746-43ed-8d43-12d62083bb28&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="RSA36"><a href="#RSA36" class="headerlink" title="RSA36"></a>RSA36</h1></li>
-<li>最小公倍数<br>$$h_1 \equiv d \pmod {p-1}$$<br>$$e*d \equiv 1 \pmod {(p-1)*(q-1)}$$<br>两边同时乘以e<br>$$h_1*e \equiv d*e \pmod {p-1}$$<br>$$h_1*e \equiv (1+k*(p-1)*(q-1)) \pmod {p-1}$$<br>$$h_1*e \equiv k*(p-1) + 1$$<br>此时$h_1$和e为m的新的一对公私钥，模数为p，只要求出p，就可以得到m。<br>同样$(p-1)&lt;h_1$,所以$k&lt;e$，枚举求出k，即可得到p<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">c=</span><br><span class="line">h1= </span><br><span class="line">e = 65537</span><br><span class="line">for k in range(2,e):</span><br><span class="line">    t=e*h1-1</span><br><span class="line">    p=t//k+1</span><br><span class="line">    if t%k==0 and is_prime(p):</span><br><span class="line">        m=pow(c,h1,p)</span><br><span class="line">        print(long_to_bytes(m))</span><br><span class="line">b&#x27;flag&#123;93776440-8fc4-429c-aca2-ddb54767d0bc&#125;&#x27;</span><br></pre></td></tr></table></figure>
-<h1 id="RSA37"><a href="#RSA37" class="headerlink" title="RSA37"></a>RSA37</h1></li>
-<li>给出c，d和e，但没有给出n<br>因为$$e*d \equiv 1 \pmod phi$$<br>所以$$e*d = k*phi + 1$$<br>d为309位，$d&lt;phi$，所以$e&gt;k$<br>可以爆破得到k，同时$p&lt;\sqrt{phi}&lt;q$，求$\sqrt{phi}$的下一个素数可得到p或q，<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">c=</span><br><span class="line">e=</span><br><span class="line">d=</span><br><span class="line">t=e*d-1</span><br><span class="line">for k in range(2,e):</span><br><span class="line">    if t%k==0:</span><br><span class="line">        phi=t//k </span><br><span class="line">        r,i=iroot(phi,2)</span><br><span class="line">        q=next_prime(r)</span><br><span class="line">        p=phi//(q-1)+1</span><br><span class="line">        m=pow(c,d,p*q)</span><br><span class="line">        print(long_to_bytes(m))</span><br><span class="line">b&#x27;flag&#123;809ec7a7-7b78-4a30-80f7-e05d9aa5798f&#125;&#x27;</span><br></pre></td></tr></table></figure>
-<h1 id="RSA38"><a href="#RSA38" class="headerlink" title="RSA38"></a>RSA38</h1></li>
-<li>首先是八进制转十进制，然后就是n不互素<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">e= 65537</span><br><span class="line">n1=</span><br><span class="line">n2=</span><br><span class="line">c1=</span><br><span class="line">c2=</span><br><span class="line">n1=int(n1,8)</span><br><span class="line">n2=int(n2,8)</span><br><span class="line">c1=int(c1,8)</span><br><span class="line">c2=int(c2,8)</span><br><span class="line">p=gcd(n1,n2)</span><br><span class="line">d=invert(e,(p-1)*(n1//p-1))</span><br><span class="line">m=pow(c1,d,n1)</span><br><span class="line">print(long_to_bytes(m))</span><br><span class="line">b&#x27;flag&#123;d32e6316-b05f-49ce-b584-cc2ef17541c0&#125;&#x27;</span><br></pre></td></tr></table></figure>
-<h1 id="RSA39"><a href="#RSA39" class="headerlink" title="RSA39"></a>RSA39</h1></li>
-<li>两个数的最小公倍数乘以其最大公因数等于两个数的积，$a*b = lcm(a,b) * gcd(a,b)$<br>因为hint是308个数，n是309个数，所以gcd((p-1),(q-1))是一位数。可以爆破求得。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">n= </span><br><span class="line">e=</span><br><span class="line">c=</span><br><span class="line">hint=</span><br><span class="line">print(len(str(hint)))</span><br><span class="line">print(len(str(n)))</span><br><span class="line">for k in range(1,10):</span><br><span class="line">    phi = k * hint  </span><br><span class="line">    b = gcd(e,phi)  </span><br><span class="line">    d = invert(e//b, phi)</span><br><span class="line">    m = pow(c,d,n)</span><br><span class="line">    flag,i= gmpy2.iroot(m,b)</span><br><span class="line">    print(long_to_bytes(flag))</span><br><span class="line">b&#x27;flag&#123;f23a4c10-a31f-4ab3-8f64-800bc0862c48&#125;&#x27;</span><br></pre></td></tr></table></figure></li>
+        <h1 id="线性同余（LCG）"><a href="#线性同余（LCG）" class="headerlink" title="线性同余（LCG）"></a>线性同余（LCG）</h1><span id="more"></span>
+<ul>
+<li>由线性函数生成随机序列的算法，标准的LCG的生成序列满足下列递推公式:<br>$$x_{n+1} \equiv (A*x_n+B) \pmod M$$<br>其中A,B,M为常数，同时需要$x_0$作为种子。<h2 id="LCG攻击"><a href="#LCG攻击" class="headerlink" title="LCG攻击"></a>LCG攻击</h2></li>
+<li>1、已知A,B,M可以直接求解某一个数的前面的数值和后面的数值。</li>
+<li>2、已知A,M,增量B未知。用连续的两个数值计算出B。<br>$$B \equiv (x_{n+1}-x_n*A) \pmod M$$<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def crack_unknown_B(states, M, A):</span><br><span class="line">    B = (states[1] - states[0]*A) % M</span><br><span class="line">    return M, A, B</span><br></pre></td></tr></table></figure></li>
+<li>3、增量B和A未知，需要知道连续的三个数值，计算出A和B。<br>$$x_n \equiv (A*x_{n-1}+B) \pmod M$$<br>$$x_{n+1} \equiv (A*x_n+B) \pmod M$$<br>化简<br>$$x_{n+1}-x_n \equiv A*(x_n-x_{n-1}) \pmod M$$<br>$$A \equiv (x_{n+1}-x_n)/(x_n-x_{n-1}) \pmod M$$<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def crack_unknown_A(states, M):</span><br><span class="line">    A = (states[2] - states[1]) * invert(states[1] - states[0], M) % M </span><br><span class="line">    return crack_unknown_B(states, M, A)</span><br></pre></td></tr></table></figure></li>
+<li>4、A,B,M都未知.<br>假设亲我们有一组随机数，每个随机数都乘以N，那么这些随机数的欧几里得算法很可能等于N。<br>所以我们可以引入$T(n)$<br>$$T(n)=S(n+1)-S(n)$$<br>所以<br>$$T(0)=S(1)-S(0)$$<br>$$T(1)=S(2)-S(1)=A*S(1)+B-(A*S(0)+B)=A*(S(1)-S(0))=A*T(0)\pmod M$$<br>$$T(2)=S(3)-S(2)=A*S(2)+B-(A*S(1)+B)=A*(S(2)-S(1))=A*T(1)\pmod M$$<br>$$T(3)=S(4)-S(3)=A*S(3)+B-(A*S(2)+B)=A*(S(3)-S(2))=A*T(2)\pmod M$$<br>然后再构造出M的倍数<br>$$T(2)*T(0)-T(1)*T(1)=A*A*T(0)*T(0)-A*T(0)*A*T(0)\pmod M=0\pmod M$$<br>此时就可以构造出不同的M的倍数来当做N，乘以每个随机数。然后运用欧几里得算法求出M。<br>得到M就可以用上面3的算法求出A,B,M。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def crack_unknown_M(states):</span><br><span class="line">	diffs = [s1 - s0 for s0, s1 in zip(states, states[1:])]</span><br><span class="line">	zeroes = [t2*t0 - t1*t1 for t0, t1, t2 in zip(diffs, diffs[1:], diffs[2:])]</span><br><span class="line">	M = abs(reduce(gcd, zeroes))</span><br><span class="line">	return crack_unknown_A(states, M)</span><br></pre></td></tr></table></figure></li>
 </ul>
 
     </div>
@@ -237,7 +225,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/RSA/" rel="tag"># RSA</a>
+              <a href="/tags/%E6%B5%81%E5%AF%86%E7%A0%81/" rel="tag"># 流密码</a>
           </div>
 
         
@@ -246,13 +234,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/02/17/RSA1-3/" rel="prev" title="RSA1-3">
-      <i class="fa fa-chevron-left"></i> RSA1-3
+    <a href="/2022/03/03/zip%E4%BC%AA%E5%8A%A0%E5%AF%86/" rel="prev" title="zip伪加密">
+      <i class="fa fa-chevron-left"></i> zip伪加密
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/03/03/zip%E4%BC%AA%E5%8A%A0%E5%AF%86/" rel="next" title="zip伪加密">
-      zip伪加密 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -311,7 +296,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RSA%E5%88%B7%E9%A2%98%EF%BC%88ctf%E5%B0%8F%E5%AD%A6%E7%94%9F%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">RSA刷题（ctf小学生）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RSA31"><span class="nav-number">2.</span> <span class="nav-text">RSA31</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RSA34"><span class="nav-number">3.</span> <span class="nav-text">RSA34</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RSA36"><span class="nav-number">4.</span> <span class="nav-text">RSA36</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RSA37"><span class="nav-number">5.</span> <span class="nav-text">RSA37</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RSA38"><span class="nav-number">6.</span> <span class="nav-text">RSA38</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RSA39"><span class="nav-number">7.</span> <span class="nav-text">RSA39</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%EF%BC%88LCG%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">线性同余（LCG）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#LCG%E6%94%BB%E5%87%BB"><span class="nav-number">1.1.</span> <span class="nav-text">LCG攻击</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

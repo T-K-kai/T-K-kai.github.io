@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="RSA模数相关攻击">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RSA模数相关攻击">
+<meta property="og:url" content="https://github.com/T-K-kai/T-K-kai.github.io.git/2022/04/18/RSA%E6%A8%A1%E6%95%B0%E7%9B%B8%E5%85%B3%E6%94%BB%E5%87%BB/index.html">
+<meta property="og:site_name" content="t-kai&#39;Blog">
+<meta property="og:description" content="RSA模数相关攻击">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-18T10:24:09.000Z">
+<meta property="article:modified_time" content="2022-04-18T14:51:59.886Z">
+<meta property="article:author" content="kevin">
+<meta property="article:tag" content="RSA">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://github.com/T-K-kai/T-K-kai.github.io.git/2022/04/18/RSA%E6%A8%A1%E6%95%B0%E7%9B%B8%E5%85%B3%E6%94%BB%E5%87%BB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>RSA模数相关攻击 | t-kai'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">t-kai'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">12</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/T-K-kai/T-K-kai.github.io.git/2022/04/18/RSA%E6%A8%A1%E6%95%B0%E7%9B%B8%E5%85%B3%E6%94%BB%E5%87%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpg">
+      <meta itemprop="name" content="kevin">
+      <meta itemprop="description" content="一鼓作气，再而衰，三而竭。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="t-kai'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RSA模数相关攻击
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-04-18 18:24:09 / 修改时间：22:51:59" itemprop="dateCreated datePublished" datetime="2022-04-18T18:24:09+08:00">2022-04-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/crypto/" itemprop="url" rel="index"><span itemprop="name">crypto</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="RSA模数相关攻击"><a href="#RSA模数相关攻击" class="headerlink" title="RSA模数相关攻击"></a>RSA模数相关攻击</h1><span id="more"></span>
+<h2 id="Number-Theory"><a href="#Number-Theory" class="headerlink" title="Number_Theory"></a>Number_Theory</h2><ul>
+<li>题目：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">m=bytes_to_long(flag)</span><br><span class="line"></span><br><span class="line">p = getPrime(1024)</span><br><span class="line">q = getPrime(1024)</span><br><span class="line">n = p*p*q</span><br><span class="line">phi = p*(p-1)*(q-1)</span><br><span class="line">e = 0x10001</span><br><span class="line">d = gmpy2.invert(e,phi)</span><br><span class="line">c1 = pow(m,e,n)</span><br><span class="line">c2 = pow(d,e,n)</span><br><span class="line"></span><br><span class="line">print(&quot;c1 =&quot;,c1)</span><br><span class="line">print(&quot;c2 =&quot;,c2)</span><br><span class="line">print(&quot;n =&quot;,n)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">c1 = 135197000670170887015214902952112050714189167088034126521761472601118478457978808566273957103953682346743544717057410925389492070147468692367021376777242601097094415762158676207229535675150059435482084537363582107613144545306522360527298121346834110951165876744155596517458346620342833812107746866497483257375274534771554612907701930022728357035211146866785419571904652515782796758394005448786722455357615525984719034121065122022869297729775732335661720031854521793531300451100962626068370367974604232768689736474578448276145295004025626539353010596254724295114126839535555002542929012576281761795223745436522476817776791324484161819474324958293644398388024994841435556799733855762414396002400869252669458749213668571691316329784102396614723869957019203846661550612067585039867978872227420248529587627942240787043882820942506043405125335171135753772564920625654557393684915142174928576684034389526206195326234995880054512576</span><br><span class="line">c2 = 292221717133882652810289895606471079445613408481782307311073337603272869665323646071738082423476723148887110187612685085628416135056699646503942916931240210970516510902939306583372071767346210088662890602734693483642733896881252231449424767741503485183783939776156644368383449291756352368538882509889244903650095191724456740134077796390198898647207690087760643717289491717195932940081390557763851399924071882419118080124059593327040240783157281209869740085774072128273432033981933727697884444772979307683857802677556868739619967785478622924244998228579253327030513592868125756387831632404265944052578689166885195331289861547242843418681385704729643267476518412683482260856219924313465182171393317204584594453525656299855848250418980869620145810777670236413802934563356536868030910929595941787059551036831397537431599506448641978888812178810469099985876532723236788296548438738504509154468508632558073705303898339232679995964</span><br><span class="line">n = 2524518516955297757223971852674459749658352228407424576776902169647806745105018835278952678293048830671116489708349213788440601471869693661971213839490060855456561853640834393005681885587994390324016997775089931216387455758856548029879520398641961681515937761772378948559791246827065143794599137447041103957234308118070883931580161999653464788730161336084835419237140755025178510429850186449404493868779434815320147601013162620486650147730608125113298997359641470084927130173391495595700003580905028331818680390928416359085166270772587885634627999030074720041186496117974267869225392976094525908249236452124303134317110330864227083387115664511743066151964911413417652700701302045707332261268731716251075752463317589112182344579635887827139773304382597775313922488204890278339604955754041984015936572144104845330467142107239250783198992670688078047555840392177044348912225514570052737531429079218954173466444048493127413711107</span><br></pre></td></tr></table></figure>
+题目给出了c1,c2和n，已知<br>$$n = p*p*q$$<br>$$phi = p*(p-1)*(q-1)$$<br>$$e*d = 1 \pmod {phi}$$<br>$$c_2 = d^e \pmod n$$<br>$$c_1 = m^e \pmod n$$<br>根据$c_1 = m^e \pmod n$求明文就要知道d，d要根据$phi$求得，归根到底还是要求出p或q才能解。<br>因为$e*d = 1 \pmod {phi}$，所以$k*phi+1 = e*d$构造出$k*phi$与n求公因数就可以得到p。<br>即$c_2 = d^e \pmod n$两边同时乘以$e^e$，变换为$e^e*c_1 = (e*d)^e \pmod n$.<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">e = 0x10001</span><br><span class="line">c1 = 135197000670170887015214902952112050714189167088034126521761472601118478457978808566273957103953682346743544717057410925389492070147468692367021376777242601097094415762158676207229535675150059435482084537363582107613144545306522360527298121346834110951165876744155596517458346620342833812107746866497483257375274534771554612907701930022728357035211146866785419571904652515782796758394005448786722455357615525984719034121065122022869297729775732335661720031854521793531300451100962626068370367974604232768689736474578448276145295004025626539353010596254724295114126839535555002542929012576281761795223745436522476817776791324484161819474324958293644398388024994841435556799733855762414396002400869252669458749213668571691316329784102396614723869957019203846661550612067585039867978872227420248529587627942240787043882820942506043405125335171135753772564920625654557393684915142174928576684034389526206195326234995880054512576</span><br><span class="line">c2 = 292221717133882652810289895606471079445613408481782307311073337603272869665323646071738082423476723148887110187612685085628416135056699646503942916931240210970516510902939306583372071767346210088662890602734693483642733896881252231449424767741503485183783939776156644368383449291756352368538882509889244903650095191724456740134077796390198898647207690087760643717289491717195932940081390557763851399924071882419118080124059593327040240783157281209869740085774072128273432033981933727697884444772979307683857802677556868739619967785478622924244998228579253327030513592868125756387831632404265944052578689166885195331289861547242843418681385704729643267476518412683482260856219924313465182171393317204584594453525656299855848250418980869620145810777670236413802934563356536868030910929595941787059551036831397537431599506448641978888812178810469099985876532723236788296548438738504509154468508632558073705303898339232679995964</span><br><span class="line">n = 2524518516955297757223971852674459749658352228407424576776902169647806745105018835278952678293048830671116489708349213788440601471869693661971213839490060855456561853640834393005681885587994390324016997775089931216387455758856548029879520398641961681515937761772378948559791246827065143794599137447041103957234308118070883931580161999653464788730161336084835419237140755025178510429850186449404493868779434815320147601013162620486650147730608125113298997359641470084927130173391495595700003580905028331818680390928416359085166270772587885634627999030074720041186496117974267869225392976094525908249236452124303134317110330864227083387115664511743066151964911413417652700701302045707332261268731716251075752463317589112182344579635887827139773304382597775313922488204890278339604955754041984015936572144104845330467142107239250783198992670688078047555840392177044348912225514570052737531429079218954173466444048493127413711107</span><br><span class="line">e=int(e)</span><br><span class="line">t=pow(e,e)</span><br><span class="line">a=(t*c2-1)%n</span><br><span class="line">p=gcd(a,n)</span><br><span class="line">num=pow(p,2)</span><br><span class="line">q=n//num</span><br><span class="line">phi = p*(p-1)*(q-1)</span><br><span class="line">d=invert(e,phi)</span><br><span class="line">flag=pow(c1,int(d),n)</span><br><span class="line">print(long_to_bytes(flag))</span><br></pre></td></tr></table></figure>
+<h2 id="Fermat"><a href="#Fermat" class="headerlink" title="Fermat"></a>Fermat</h2></li>
+<li>对于一般的素数分解，我们一般的思路是从2开始遍历所有的素数来分解，如果一个数很大，这样就显得特别慢。对于费马分解，举个例子。<br>$$\sqrt{10379} \approx 101.9$$<br>那么从102开始算起<br>$$102^2 - 10379 = 25 = 5^2$$<br>$$ 10379 = 102^2 - 5^2 = (102 -5)*(102 + 5) = 97 * 107$$<br>显然很容易就分解出n，适用于p和q相差较小的情况。<br>题目：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">e=0x10001</span><br><span class="line"></span><br><span class="line">p=getPrime(512)</span><br><span class="line">q=next_prime( (13*p+getrandbits(128))//17 )</span><br><span class="line">n=p*q</span><br><span class="line">m=bytes_to_long(flag)</span><br><span class="line"></span><br><span class="line">c=pow(m,e,n)</span><br><span class="line">print(c)</span><br><span class="line">print(n)</span><br><span class="line">#c=61210757404699360411834705876315389287281452538936254977336790191551110976872070415620500435216779308198824225516842136247783032951547760591731247672741808457739610300467284361886546960501709913253481141414268193023024235931504040245343707708420451188331899519569824072662976840311527093681040882223472785988</span><br><span class="line">#n=114795442761738815919880349179595898929227373082893681931089860389576331332482297761753876724488064515038847143520274362597982087172242838464295819837594221689191441098049066087021837856358821738137233916396069234092680486642515354424563417906798025799099594919012419540877122222102444588845318058433768035153</span><br></pre></td></tr></table></figure>
+关键条件：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">q=next_prime((13*p+getrandbits(128))//17)</span><br></pre></td></tr></table></figure>
+即$17*q \approx 13 * p + x$，而p和q是512位，相对于128位的数x，x就很小，这时就相当于$17*p$和$13*q$相差很小，对$13*17*n$进行分解。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">c=61210757404699360411834705876315389287281452538936254977336790191551110976872070415620500435216779308198824225516842136247783032951547760591731247672741808457739610300467284361886546960501709913253481141414268193023024235931504040245343707708420451188331899519569824072662976840311527093681040882223472785988</span><br><span class="line">N=114795442761738815919880349179595898929227373082893681931089860389576331332482297761753876724488064515038847143520274362597982087172242838464295819837594221689191441098049066087021837856358821738137233916396069234092680486642515354424563417906798025799099594919012419540877122222102444588845318058433768035153</span><br><span class="line">e=65537</span><br><span class="line">NN=13*17*N</span><br><span class="line">sqrt=iroot(NN,2)[0]</span><br><span class="line"></span><br><span class="line">while True:</span><br><span class="line">    sqrt=sqrt+1</span><br><span class="line">    a=iroot(sqrt*sqrt-NN,2)</span><br><span class="line">    if a[1]:</span><br><span class="line">        x=sqrt</span><br><span class="line">        y=a[0]</span><br><span class="line">        q=(x+y)//17</span><br><span class="line">        p=(x-y)//13</span><br><span class="line">        break</span><br><span class="line">print(p,q)</span><br><span class="line">phi=(p-1)*(q-1)</span><br><span class="line">d=invert(e,phi)</span><br><span class="line">flag=long_to_bytes(pow(c,d,N))</span><br><span class="line">print(flag)</span><br></pre></td></tr></table></figure>
+<h2 id="p-1-amp-p-1-amp"><a href="#p-1-amp-p-1-amp" class="headerlink" title="p-1&amp;p+1&amp;^^^"></a>p-1&amp;p+1&amp;^^^</h2></li>
+<li>光滑数：指可以分解为小素数乘积的正整数。p-1光滑可以用Pollard’s p-1算法分解，p+1光滑可以用Williams’s p+1算法分解。<br>题目：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">def gen_prime(digit):</span><br><span class="line">    primes = []</span><br><span class="line">    pri = 1</span><br><span class="line">    while(len(primes)&lt;100):</span><br><span class="line">        pri = gmpy2.next_prime(pri)</span><br><span class="line">        primes.append(int(pri))</span><br><span class="line">    while True:</span><br><span class="line">        count = 2</span><br><span class="line">        while count &lt; 2**digit:</span><br><span class="line">            count *= random.choice(primes)</span><br><span class="line">        count += 1</span><br><span class="line">        if(gmpy2.is_prime(count)):</span><br><span class="line">            return count</span><br><span class="line"></span><br><span class="line">def gen_prime_2(digit):</span><br><span class="line">    primes = []</span><br><span class="line">    pri = 1</span><br><span class="line">    while(len(primes)&lt;100):</span><br><span class="line">        pri = gmpy2.next_prime(pri)</span><br><span class="line">        primes.append(int(pri))</span><br><span class="line">    while True:</span><br><span class="line">        count = 2</span><br><span class="line">        while count &lt; 2**digit:</span><br><span class="line">            count *= random.choice(primes)</span><br><span class="line">        count -= 1</span><br><span class="line">        if(gmpy2.is_prime(count)):</span><br><span class="line">            return count</span><br><span class="line"></span><br><span class="line">def generate(start, modulus, a, b, c, d):</span><br><span class="line">    arr = []</span><br><span class="line">    arr.append(start)</span><br><span class="line">    arr.append(start+1)</span><br><span class="line">    arr.append(start+2)</span><br><span class="line">    for i in range(10**100):</span><br><span class="line">        arr.append((a * arr[-3] + b * arr[-2] + c * arr[-1] + d) % modulus)</span><br><span class="line">    return arr</span><br><span class="line"></span><br><span class="line">p1 = gen_prime(256)</span><br><span class="line">q1 = getPrime(256)</span><br><span class="line">p2 = gen_prime_2(256)</span><br><span class="line">q2 = getPrime(256)</span><br><span class="line">assert p1 &gt; q1</span><br><span class="line">assert p2 &gt; q2</span><br><span class="line">n1 = p1 * q1</span><br><span class="line">n2 = p2 * q2</span><br><span class="line">print &quot;n1 = %s&quot; % str(n1)</span><br><span class="line">print &quot;n2 = %s&quot; % str(n2)</span><br><span class="line"></span><br><span class="line">r = getPrime(512)</span><br><span class="line">print &quot;r = %s&quot; % str(r)</span><br><span class="line"></span><br><span class="line">flag = &quot;flag&#123;xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&#125;&quot;</span><br><span class="line">m = s2n(flag)</span><br><span class="line"></span><br><span class="line">arr = generate(m, r, p1, q1, p2, q2)</span><br><span class="line"></span><br><span class="line">print &quot;arr[10**100] = %s&quot; % str(arr[10**100])</span><br><span class="line">print &quot;arr[10**100+1] = %s&quot; % str(arr[10**100+1])</span><br><span class="line">print &quot;arr[10**100+2] = %s&quot; % str(arr[10**100+2])</span><br><span class="line"></span><br><span class="line"># n1 = 1122627862697321019530282965736391850755580895936802291161309915792429961624747356094273651528053737694375752383507509008511083571424513544351844231796981247</span><br><span class="line"># n2 = 42452228756074949430200119187674072800166259263276225653674599426683428744745000585507174701894408343398957593869403921976682474759688236534918012868451437</span><br><span class="line"># r = 12562551311997602982227662257453842057851021749009292708783465660065261139703971906109320639580310598023202634257624805719964182261882169860035285540999137</span><br><span class="line"># arr[10**100] = 4838353389408955215917845462224851356983185785715321739245030612236910363177888113470205298612968999913978808363082599570155255107799227941046736259627961</span><br><span class="line"># arr[10**100+1] = 10699223576890057648654189340104320126576219437282628103579325446469238279292850193524138389756436672641376651989022132710127197616146958216805814995598472</span><br><span class="line"># arr[10**100+2] = 10255743354332378416989087696439685123717830836779737961024112448965245238772080092701344614830923313888435306261206177140560579750917219609679498132161402</span><br></pre></td></tr></table></figure>
+首先根据函数可以判定其中一个p是p-1光滑，另一个是p+1光滑。而加密函数是递归$10^{100}$次。<br>依次逆向递归这么多次方显然很麻烦，所以仿照快速幂的方法来求。根据递推的线性关系构造递推矩阵。<br>$\begin{pmatrix} f(n) \\ f(n-1) \\ f(n-2) \\ d \end{pmatrix}$ = $\begin{bmatrix}c &amp; b &amp; a &amp; 1 \\1 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix}^{10^{100}}$* $\begin{pmatrix} f(2) \\ f(1) \\ f(0) \\ d \end{pmatrix}$  <br /><br>所以就变为解矩阵方程的问题了。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">n1 = 1122627862697321019530282965736391850755580895936802291161309915792429961624747356094273651528053737694375752383507509008511083571424513544351844231796981247</span><br><span class="line">n2 = 42452228756074949430200119187674072800166259263276225653674599426683428744745000585507174701894408343398957593869403921976682474759688236534918012868451437</span><br><span class="line">r = 12562551311997602982227662257453842057851021749009292708783465660065261139703971906109320639580310598023202634257624805719964182261882169860035285540999137</span><br><span class="line">fn_2= 4838353389408955215917845462224851356983185785715321739245030612236910363177888113470205298612968999913978808363082599570155255107799227941046736259627961</span><br><span class="line">fn_1= 10699223576890057648654189340104320126576219437282628103579325446469238279292850193524138389756436672641376651989022132710127197616146958216805814995598472</span><br><span class="line">fn= 10255743354332378416989087696439685123717830836779737961024112448965245238772080092701344614830923313888435306261206177140560579750917219609679498132161402</span><br><span class="line">p2=williams_pp1(n2)</span><br><span class="line">q2=n2//p2</span><br><span class="line">p1=pollard_pm1(n1, B1=100, B2=1000)</span><br><span class="line">q1=n1//p1</span><br><span class="line">r = 12562551311997602982227662257453842057851021749009292708783465660065261139703971906109320639580310598023202634257624805719964182261882169860035285540999137</span><br><span class="line">p1=11779674470989201650533406519886591289516202072957618550910646323186300227953911</span><br><span class="line">q1=95302112589113679680301995097922805046655270841881898956984154849943632549177</span><br><span class="line">p2=559984991209430681992356301273102984193773851159338589102023017245948506277733</span><br><span class="line">q2=75809583153985098019715986826884104082385547072434243595385862972758760080489</span><br><span class="line">a,b,c,d=p1,q1,p2,q2</span><br><span class="line">M=matrix(Zmod(r),[[c,b,a,1],</span><br><span class="line">                  [1,0,0,0],</span><br><span class="line">                  [0,1,0,0],</span><br><span class="line">                  [0,0,0,1]])</span><br><span class="line"></span><br><span class="line">fn_2=4838353389408955215917845462224851356983185785715321739245030612236910363177888113470205298612968999913978808363082599570155255107799227941046736259627961</span><br><span class="line">fn_1=10699223576890057648654189340104320126576219437282628103579325446469238279292850193524138389756436672641376651989022132710127197616146958216805814995598472</span><br><span class="line">fn=10255743354332378416989087696439685123717830836779737961024112448965245238772080092701344614830923313888435306261206177140560579750917219609679498132161402</span><br><span class="line"></span><br><span class="line">N=matrix(Zmod(r),[[fn,fn_1,fn_2,d]])</span><br><span class="line">N=N.T</span><br><span class="line">nn=10**100</span><br><span class="line">M=M^nn</span><br><span class="line">print(M^-1*N)</span><br></pre></td></tr></table></figure>
+<h2 id="Common-Modulus"><a href="#Common-Modulus" class="headerlink" title="Common_Modulus"></a>Common_Modulus</h2></li>
+<li>题目：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">assert e1*e2==3087</span><br><span class="line"></span><br><span class="line">m=bytes_to_long(flag)</span><br><span class="line">c1=pow(m,e1,n)</span><br><span class="line">c2=pow(m,e2,n)</span><br><span class="line">print(n)</span><br><span class="line">print(c1)</span><br><span class="line">print(c2)</span><br><span class="line"></span><br><span class="line">&#x27;&#x27;&#x27;</span><br><span class="line">n=31934670515243135376544494777800167818741680889482357476043664101552263846965902709062687560949362947553749723524721435747896957912492147193043671762758273928557874925637788128125234989097054621581308987239271864314404632159582139228882592627148471549398446422733460548334634327481394478107361389915143539547418985910098660767096947132861742818924085617776838873128115919283348588325931648893539577018391628362088644594757514603575697434296673391737253417736818781989856674787549446853432501840734261821542854584122792474217519456831119992972697291491227130606752323868696432108995904433</span><br><span class="line">c1=30844012039330070258536456143761809358862057797854053892630858440607549827193033460787087324464139605654012890812030144340209360634997046801933769493806658354096950161853154223654732670515647323259883550654904887690895032316338986275991996131184156035865626736143044052392910180192210388125839151242363611250480493837180613620038095895598448681833958215693745432776287627165112688548348416744866588794033023405575776579986490123103992662714442506606093897670878390187671611825093216814851078943446973697872672875998366847057357888052222683069587610459869062116880896250860882626078292958</span><br><span class="line">c2=29376289618101477573845080776626444563736469597151865167336042485301759536784462783567968526685694047477189187540318949323788697287596715848087482575926380828996111996259334495315493477987062604746359839578403800720962544133144995430614683984221525578746985707910306870258697864507359761731111650008286206169103341385599663639278442098324437911561465817861903840747109977213158732239774315834302674212907532925861990950343686568112047401696595811630295514183756734449163322948609350655620291947803969755100787417081253273154808178944403727535343569940717056601055016711889950898679773833</span><br><span class="line">&#x27;&#x27;&#x27;</span><br></pre></td></tr></table></figure>
+显然这题是共模攻击，分解e1e2，分解之后发现e1和e2不互素，这样按照共模攻击求出的m实际上是$m^e$，e是e1和e2的公因数。即$m^e = m + k*n$，枚举k，对$m^e$开根号e，直到求出明文。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">n=31934670515243135376544494777800167818741680889482357476043664101552263846965902709062687560949362947553749723524721435747896957912492147193043671762758273928557874925637788128125234989097054621581308987239271864314404632159582139228882592627148471549398446422733460548334634327481394478107361389915143539547418985910098660767096947132861742818924085617776838873128115919283348588325931648893539577018391628362088644594757514603575697434296673391737253417736818781989856674787549446853432501840734261821542854584122792474217519456831119992972697291491227130606752323868696432108995904433</span><br><span class="line">c1=30844012039330070258536456143761809358862057797854053892630858440607549827193033460787087324464139605654012890812030144340209360634997046801933769493806658354096950161853154223654732670515647323259883550654904887690895032316338986275991996131184156035865626736143044052392910180192210388125839151242363611250480493837180613620038095895598448681833958215693745432776287627165112688548348416744866588794033023405575776579986490123103992662714442506606093897670878390187671611825093216814851078943446973697872672875998366847057357888052222683069587610459869062116880896250860882626078292958</span><br><span class="line">c2=29376289618101477573845080776626444563736469597151865167336042485301759536784462783567968526685694047477189187540318949323788697287596715848087482575926380828996111996259334495315493477987062604746359839578403800720962544133144995430614683984221525578746985707910306870258697864507359761731111650008286206169103341385599663639278442098324437911561465817861903840747109977213158732239774315834302674212907532925861990950343686568112047401696595811630295514183756734449163322948609350655620291947803969755100787417081253273154808178944403727535343569940717056601055016711889950898679773833</span><br><span class="line"></span><br><span class="line">e1e2=3087</span><br><span class="line"></span><br><span class="line">import libnum</span><br><span class="line">import gmpy2</span><br><span class="line"></span><br><span class="line">def rsa_gong_N_def(e1,e2,c1,c2,n):  </span><br><span class="line">    g,x,y=gmpy2.gcdext(e1,e2)</span><br><span class="line">    m = pow(c1,x,n) * pow(c2,y,n) % n</span><br><span class="line">    return int(m)</span><br><span class="line"> </span><br><span class="line">def de(c, e, n): </span><br><span class="line">    k = 0</span><br><span class="line">    while k&lt;1000:</span><br><span class="line">        mk = c + n*k</span><br><span class="line">        flag, true1 = gmpy2.iroot(mk, e)  </span><br><span class="line">        if True == true1:</span><br><span class="line">            return flag</span><br><span class="line">        k += 1</span><br><span class="line">for e1 in range(2,e1e2):</span><br><span class="line">    if e1e2%e1==0:</span><br><span class="line">        e2=e1e2//e1</span><br><span class="line">        c=rsa_gong_N_def(e1, e2, c1, c2, n)</span><br><span class="line">        e=gmpy2.gcd(e1,e2)</span><br><span class="line">        m1=de(c, e, n)</span><br><span class="line">        if m1:  </span><br><span class="line">            print(libnum.n2s(int(m1)))</span><br></pre></td></tr></table></figure>
+<h2 id="Common-Prime"><a href="#Common-Prime" class="headerlink" title="Common_Prime"></a>Common_Prime</h2></li>
+<li>题目：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">from Crypto.Util.number import getStrongPrime, getPrime, isPrime, bytes_to_long</span><br><span class="line"></span><br><span class="line">FLAG = b&quot;flag&#123;*****************&#125;&quot;</span><br><span class="line"></span><br><span class="line">def genPrime(prime):</span><br><span class="line">    while True:</span><br><span class="line">        a = getPrime(256)</span><br><span class="line">        p = 2*prime*a + 1</span><br><span class="line">        if isPrime(p):</span><br><span class="line">            break</span><br><span class="line">    while True:</span><br><span class="line">        b = getPrime(256)</span><br><span class="line">        q = 2*prime*b + 1</span><br><span class="line">        if isPrime(q):</span><br><span class="line">            break</span><br><span class="line">    return p, q</span><br><span class="line"></span><br><span class="line">prime = getStrongPrime(512)</span><br><span class="line">p1, q1 = genPrime(prime)</span><br><span class="line">p2, q2 = genPrime(prime)</span><br><span class="line">assert p1 != p2 != q1 != q2</span><br><span class="line"></span><br><span class="line">n1 = p1*q1</span><br><span class="line">n2 = p2*q2</span><br><span class="line">e = 65537</span><br><span class="line"></span><br><span class="line">m1 = bytes_to_long(FLAG[:len(FLAG)//2])</span><br><span class="line">m2 = bytes_to_long(FLAG[len(FLAG)//2:])</span><br><span class="line"></span><br><span class="line">c1 = pow(m1, e, n1)</span><br><span class="line">c2 = pow(m2, e, n2)</span><br><span class="line"></span><br><span class="line">print(f&quot;n1 = &#123;n1&#125;&quot;)</span><br><span class="line">print(f&quot;n2 = &#123;n2&#125;&quot;)</span><br><span class="line">print(f&quot;e = &#123;e&#125;&quot;)</span><br><span class="line">print(f&quot;c1 = &#123;c1&#125;&quot;)</span><br><span class="line">print(f&quot;c2 = &#123;c2&#125;&quot;)</span><br><span class="line">&#x27;&#x27;&#x27;</span><br><span class="line">n1 = 5988035982677024835726010013345284497945205346360155523133954787882847728405858815255904530906624664584259375229879267817882928789405665999025026799402006940715816588863031972181999494372537555009590134633764991534963195534492426415687550526131250829607626599173594149756000341440467866423150782405751659310555407593172587870047883026117404818682193677745882066297261888369803083786393596387406463752561398987541218415053778376606049353845311818939279213190326961</span><br><span class="line">n2 = 3889377582467539767413389038472162599199842554516047526056378072130941170132747135019418709283224982836227440743301641742768703559970957351802152333354364853553028470435812937066089921984604434934223389975581559432065363636335454506079869087322076846494272816801359426081507864683231291126947704180186577414176028586262477239555626837030252492165456198810982608397267534713926525962684973878835852738428897091753353632023492118430609194691611764713950330155352257</span><br><span class="line">e = 65537</span><br><span class="line">c1 = 374417042440467967487479530657310190782455563986640394659129670289176572017482596311989677324842040750064297725855916566185220253588884030491114566288908041900431515694620476796819011138445849437670483079596874762945951619666034904980578820146072493535930894118762590625598210933933031206668877818434987787836933916562871594253241200960660288318864697038489312888471295379812663475394831516734943835117466405477999710874902386126332845485524200550539966257453023</span><br><span class="line">c2 = 210661307107467679392298425061248321754786327861920897618639490376784291551993737423427661411779107125459051187564089707059683306875018364430956746793889103107026650086140215336682370958345587578807367277389671993270813916251940073457232030808180972374630335783114654398615801847087828888276800744931754893879794574782205602084362530819444560353823826069268697458385280710559554688292363335455330652086615840148847631655641912537250864981946774892438972844424145</span><br><span class="line">&#x27;&#x27;&#x27;</span><br></pre></td></tr></table></figure>
+已知条件：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">e = 65537</span><br><span class="line">prime = getStrongPrime(512)</span><br><span class="line">a = getPrime(256)</span><br><span class="line">b = getPrime(256)</span><br><span class="line">p = 2*prime*a + 1</span><br><span class="line">q = 2*prime*b + 1</span><br></pre></td></tr></table></figure>
+设prime为t，所以<br>$$n_1 = (2*t*a + 1)*(2*t*b + 1) = 4 *t^2*a*b + 2*t*(a+b) + 1$$<br>$$n_2 = (2*t*c + 1)*(2*t*d + 1) = 4 *t^2*c*d + 2*t*(c+d) + 1$$<br>显然根据这两个公式可以求出prime，<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">prime = gcd(n1-1,n2-1)</span><br></pre></td></tr></table></figure>
+而$$\frac{n_1 - 1}{2*t} = 2*t*a*b + (a+b)$$<br>相当于$$\frac{n_1 - 1}{2*t} = (a+b) \pmod t$$<br>从而可以求出$(a+b)$和$phi = 4 *t^2*a*b = n_1 - 1 - (a+b) $<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">n1 = 5988035982677024835726010013345284497945205346360155523133954787882847728405858815255904530906624664584259375229879267817882928789405665999025026799402006940715816588863031972181999494372537555009590134633764991534963195534492426415687550526131250829607626599173594149756000341440467866423150782405751659310555407593172587870047883026117404818682193677745882066297261888369803083786393596387406463752561398987541218415053778376606049353845311818939279213190326961</span><br><span class="line">n2 = 3889377582467539767413389038472162599199842554516047526056378072130941170132747135019418709283224982836227440743301641742768703559970957351802152333354364853553028470435812937066089921984604434934223389975581559432065363636335454506079869087322076846494272816801359426081507864683231291126947704180186577414176028586262477239555626837030252492165456198810982608397267534713926525962684973878835852738428897091753353632023492118430609194691611764713950330155352257</span><br><span class="line">e = 65537</span><br><span class="line">c1 = 374417042440467967487479530657310190782455563986640394659129670289176572017482596311989677324842040750064297725855916566185220253588884030491114566288908041900431515694620476796819011138445849437670483079596874762945951619666034904980578820146072493535930894118762590625598210933933031206668877818434987787836933916562871594253241200960660288318864697038489312888471295379812663475394831516734943835117466405477999710874902386126332845485524200550539966257453023</span><br><span class="line">c2 = 210661307107467679392298425061248321754786327861920897618639490376784291551993737423427661411779107125459051187564089707059683306875018364430956746793889103107026650086140215336682370958345587578807367277389671993270813916251940073457232030808180972374630335783114654398615801847087828888276800744931754893879794574782205602084362530819444560353823826069268697458385280710559554688292363335455330652086615840148847631655641912537250864981946774892438972844424145</span><br><span class="line"></span><br><span class="line">g=12393269429708213792704306075612863229814617000476670726598455516967466312461451092256702474450082476350577438675261309561587621103358001894860243628597081</span><br><span class="line">t_1=(n1-1)//(2*g)</span><br><span class="line">a_b_1=t_1%g</span><br><span class="line">phi1=(t_1-a_b_1)*(2*g)</span><br><span class="line">d=invert(e,phi1)</span><br><span class="line">flag1=pow(c1,d,n1)</span><br><span class="line">t_2=(n2-1)//(2*g)</span><br><span class="line">a_b_2=t_2%g</span><br><span class="line">phi2=(t_2-a_b_2)*(2*g)</span><br><span class="line">d=invert(e,phi2)</span><br><span class="line">flag2=pow(c2,d,n2)</span><br><span class="line">print(long_to_bytes(flag1))</span><br><span class="line">print(long_to_bytes(flag2))</span><br><span class="line"># flag&#123;Common_Prime_RSA_2nd_GCD_problem&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Wilson"><a href="#Wilson" class="headerlink" title="Wilson"></a>Wilson</h2></li>
+<li>Wilson定理：一个素数p，有$(p-1)! = -1 \pmod p$<br>题目：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">p = getPrime(1024)</span><br><span class="line">q = getPrime(16)</span><br><span class="line">n = p*q</span><br><span class="line">m = bytes_to_long(flag)</span><br><span class="line">for i in range(1,p-q):</span><br><span class="line">    m = m*i%n</span><br><span class="line">e = 1049</span><br><span class="line">print(pow(2,e,n))</span><br><span class="line">print(pow(m,e,n))</span><br><span class="line">#4513855932190587780512692251070948513905472536079140708186519998265613363916408288602023081671609336332823271976169443708346965729874135535872958782973382975364993581165018591335971709648749814573285241290480406050308656233944927823668976933579733318618949138978777831374262042028072274386196484449175052332019377</span><br><span class="line">#3303523331971096467930886326777599963627226774247658707743111351666869650815726173155008595010291772118253071226982001526457616278548388482820628617705073304972902604395335278436888382882457685710065067829657299760804647364231959804889954665450340608878490911738748836150745677968305248021749608323124958372559270</span><br></pre></td></tr></table></figure>
+已知条件：<br>p和q相差很大<br>$c_1 = 2^e \pmod n$ <br /><br>$c_2 = (p-q-1)! *m \pmod n$<br>即$c_1 + k*n = 2^e$，求出$2^e - c_1$，分解即可得到p和q。<br /><br>又因为$(p-1)! = -1 \pmod p$，即$(p-1)!$已知。<br /><br>只要求出$(p-q-1)!$到$(p-1)!$之间q个数的乘积，再用$(p-1)!$除，就可以得到$(p-q-1)!$，从而得到m，再进行正常的RSA解密。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">c1=4513855932190587780512692251070948513905472536079140708186519998265613363916408288602023081671609336332823271976169443708346965729874135535872958782973382975364993581165018591335971709648749814573285241290480406050308656233944927823668976933579733318618949138978777831374262042028072274386196484449175052332019377</span><br><span class="line">c2=3303523331971096467930886326777599963627226774247658707743111351666869650815726173155008595010291772118253071226982001526457616278548388482820628617705073304972902604395335278436888382882457685710065067829657299760804647364231959804889954665450340608878490911738748836150745677968305248021749608323124958372559270</span><br><span class="line">e = 1049</span><br><span class="line">q = 34211</span><br><span class="line">p = 170229264879724117919007372149468684565431232721075153274808454126426741324966131188484635914814926870341378228417496808202497615585946352638507704855332363766887139815236730403246238633855524068161116748612090155595549964229654262432946553891601975628848891407847198187453488358420350203927771308228162321231</span><br><span class="line"></span><br><span class="line">n=p*q</span><br><span class="line">phi=(p-1)*(q-1)</span><br><span class="line">d=invert(e,phi)</span><br><span class="line">m=pow(c2,int(d),n)</span><br><span class="line"></span><br><span class="line">num=1</span><br><span class="line">for i in range((p-q),p):</span><br><span class="line">	num=num*i%p</span><br><span class="line"></span><br><span class="line">num_inv=invert(num,p)</span><br><span class="line">p_q=(-1)*num_inv%p   #p-q-1的阶乘</span><br><span class="line"></span><br><span class="line">p_q_inv=invert(p_q,p)</span><br><span class="line"></span><br><span class="line">flag=p_q_inv*m%p</span><br><span class="line">print(long_to_bytes(flag))</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RSA/" rel="tag"># RSA</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/11/rabin/" rel="prev" title="rabin">
+      <i class="fa fa-chevron-left"></i> rabin
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RSA%E6%A8%A1%E6%95%B0%E7%9B%B8%E5%85%B3%E6%94%BB%E5%87%BB"><span class="nav-number">1.</span> <span class="nav-text">RSA模数相关攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Number-Theory"><span class="nav-number">1.1.</span> <span class="nav-text">Number_Theory</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fermat"><span class="nav-number">1.2.</span> <span class="nav-text">Fermat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#p-1-amp-p-1-amp"><span class="nav-number">1.3.</span> <span class="nav-text">p-1&amp;p+1&amp;^^^</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Common-Modulus"><span class="nav-number">1.4.</span> <span class="nav-text">Common_Modulus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Common-Prime"><span class="nav-number">1.5.</span> <span class="nav-text">Common_Prime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wilson"><span class="nav-number">1.6.</span> <span class="nav-text">Wilson</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="kevin"
+      src="/images/touxiang.jpg">
+  <p class="site-author-name" itemprop="name">kevin</p>
+  <div class="site-description" itemprop="description">一鼓作气，再而衰，三而竭。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/T-K-kai" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;T-K-kai"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1494513782@qq.com" title="E-Mail → mailto:1494513782@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">kevin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
